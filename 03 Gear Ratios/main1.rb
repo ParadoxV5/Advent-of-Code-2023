@@ -17,6 +17,8 @@ Enumerator::Chain.new(
   dummy_lines
 ).each_cons(3) do|pred, line, succ|
   line.scan(/\d+/) do|num|
+    # Apparently there’re people utilizing that numbers are *de facto* up to 3 digits.
+    # But why restrict yourself when logic can design flexible code?
     md = Regexp.last_match
     # The match is at indices {MatchData#begin}**`...`**{MatchData#end}.
     # Here we’d like the `begin` be exclusive just like the `end`
