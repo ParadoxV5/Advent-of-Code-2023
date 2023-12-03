@@ -1,7 +1,7 @@
 PART2 = true
 
 puts(
-  File.open('input.txt').sum do|game|
+  File.foreach('input.txt').sum do|game|
     tally = Hash.new(0) #: Hash[String, Integer]
     game.split(';') do|game|
       tally.merge!(
