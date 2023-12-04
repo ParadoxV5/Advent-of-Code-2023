@@ -11,6 +11,7 @@ puts(
     
     if PART2
       tally.each_value.inject &:*
+      
     elsif { # Part 1
       'red' => 12,
       'green' => 13,

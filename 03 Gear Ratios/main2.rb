@@ -8,13 +8,13 @@
 # After all, we need to keep tally of number counts and disqualify
 # gears that don’t have __exactly__ two numbers, no more and no less.
 
-FILE = File.foreach('input.txt').with_index
+INPUT = File.foreach('input.txt').with_index
 
-GEARS = FILE.flat_map do|line, y|
+GEARS = INPUT.flat_map do|line, y|
   line.each_char.with_index.filter_map {|char, x| [[x, y], []] if char == '*' }
 end.to_h #: Hash[[Integer, Integer], Array[String]]
 
-FILE.each do|line, y|
+INPUT.each do|line, y|
   line.scan(/\d+/) do|num|
     # See comments regarding numbers beïng “up to 3 digits” on `main1.rb`.
     md = Regexp.last_match

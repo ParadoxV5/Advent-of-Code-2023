@@ -18,6 +18,7 @@ puts(
       ).tap {|copies| win_count.times do|i_next|
         EXTRAS_QUEUE[i_next] = EXTRAS_QUEUE[i_next]&.+(copies) || copies
       end }
+      
     else
       win_count.zero? ? 0 : 1 << win_count.pred
     end
