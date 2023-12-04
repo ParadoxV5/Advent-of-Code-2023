@@ -17,6 +17,7 @@ Enumerator::Chain.new(
     (\d+)? # `prefix_num`
     \K     # Match Reset – have `Regexp.last_match` disregard `prefix_num` …
     \*     # … so `x` is the index of the `*` literal rather than that of `prefix_num`
+           # (Not that I like using `\K`, but rather `…+` can’t go in a lookbehind.)
     (\d+)? # `suffix_num`
   /x) do|affix_nums| # [prefix_num, suffix_num]
     affix_nums.compact! # Don’t want `nil`s for non-matches
