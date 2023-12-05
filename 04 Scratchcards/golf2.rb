@@ -1,2 +1,2 @@
 Q=[1]*212
-p$<.sum{|l|n=Q.pop;l[..39].scan(/.../).count{l[41..][_1]}.times{Q[~_1]+=n};n}
+p$<.sum{|l|n=Q.pop;(38-l.split.uniq.size).times{Q[~_1]+=n};n}

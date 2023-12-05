@@ -1,1 +1,1 @@
-p$<.sum{|l|1<<l[..39].scan(/.../).count{l[41..][_1]}-1}
+p$<.sum{1<<37-_1.split.uniq.size}
