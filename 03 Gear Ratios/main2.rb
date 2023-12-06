@@ -15,7 +15,7 @@ GEARS = INPUT.flat_map do|line, y|
 end.to_h #: Hash[[Integer, Integer], Array[String]]
 
 INPUT.each do|line, y|
-  line.scan(/\d+/) do|num|
+  line.scan(/\d++/) do|num|
     # See comments regarding numbers beïng “up to 3 digits” on `main1.rb`.
     md = Regexp.last_match
     before = md.begin(0).pred # Don’t need to protect against `-1` index this time

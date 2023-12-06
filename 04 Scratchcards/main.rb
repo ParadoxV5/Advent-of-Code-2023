@@ -9,7 +9,7 @@ puts(
   File.foreach('input.txt').sum do|line|
     win_count = line.split(/[|:]/)
       .tap(&:shift) # The card number is not used in either part of the puzzle
-      .map { _1.scan /\d+/ }
+      .map { _1.scan /\d++/ }
       .then {|win_numbers, numbers| numbers.count { win_numbers.include? _1 } }
     
     if PART2

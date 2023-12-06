@@ -19,7 +19,7 @@ puts(
     }.any? {|color, limit| tally[color] > limit }
       0
     else
-      game[/\d+/].to_i
+      game[/\d++/].to_i
     end
   end
 )
