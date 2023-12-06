@@ -15,7 +15,12 @@ calculate =-> (race) do
   # Note: I don’t like using Floats, but here division by 2 is binary-precise
   mid = t / 2
   dev = Math.sqrt(t * t / 4 - d)
-  (mid + dev).floor - (mid - dev).ceil + 1 # (min..max).size = max - min + 1
+  #   (next_int(min)..prev_int(max)).size
+  # = prev_int(max) - next_int(min) + 1
+  # = (⌈max⌉ - 1) - (⌊min⌋ + 1) + 1
+  # = ⌈max⌉ - 1 - ⌊min⌋ - 1 + 1
+  # = ⌈max⌉ - ⌊min⌋ - 1
+  (mid + dev).ceil - (mid - dev).floor - 1
 end
 
 input = File.foreach('input.txt').first(2).map { _1.scan /\d++/ }
