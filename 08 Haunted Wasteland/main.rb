@@ -21,9 +21,8 @@ puts(
       if VALIDATE
         if PART2
           there = here
-          count.times.zip(INSTRUCTIONS.cycle) do|_count, instruction|
-            here = NETWORK.dig here, instruction
-            break if here.end_with? 'Z'
+          (count...count * 2).each do|index|
+            here = NETWORK.dig here, INSTRUCTIONS.fetch(index % INSTRUCTIONS.size)
           end
           raise "Path to `#{there}` does not repeat itself (landed on `#{here}` instead)" unless there == here
         else
