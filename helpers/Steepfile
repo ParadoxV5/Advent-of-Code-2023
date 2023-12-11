@@ -1,0 +1,5 @@
+target :'.' do
+  check '.'
+  signature '.'
+  configure_code_diagnostics Steep::Diagnostic::Ruby.strict
+end

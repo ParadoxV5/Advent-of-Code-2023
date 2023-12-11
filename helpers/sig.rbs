@@ -1,0 +1,12 @@
+class BsearchIndexer[E] < Proc
+  @array: Array[E]
+  
+  def self.new: [E] (Array[E] array) -> (instance & ^(E min) -> Integer)
+  def initialize: [E] (Array[E] array) -> void
+  alias self.[] self.new
+  
+  def range: (E begin, E end) -> Range[Integer]
+  def []: (E begin, E end) -> Array[E]?
+  
+  def size: (E begin, E end) -> Integer
+end
