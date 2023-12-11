@@ -1,7 +1,9 @@
+require_relative '../helpers/bsearch_indexer'
+
 input = File.readlines('input.txt', chomp: true)
 
 GALAXIES = []
-EMPTY_COORDS = [
+empty_coords = [
   Array.new(input.fetch(0).size, &:itself), # x
   Array.new(input.size, &:itself) # y
 ]
@@ -11,25 +13,20 @@ input.each_with_index do|line, y|
     x = Regexp.last_match.begin(0)
     # Each galaxy
     GALAXIES << [x, y]
-    EMPTY_COORDS.fetch(0)[x] = EMPTY_COORDS.fetch(1)[y] = nil
+    empty_coords.fetch(0)[x] = empty_coords.fetch(1)[y] = nil
   end
 end
 
-input = nil # GC
-EMPTY_COORDS.each &:compact!
+EMPTY_COORD_INDEXERS = empty_coords.map { BsearchIndexer.new _1.compact }
+input = empty_coords = nil # GC
 
 # Strategy: Count the taxicab distance normally, account for the expansion separately.
 taxicab_sum = empty_count = 0
 GALAXIES.combination(2) do|set|
-  set << EMPTY_COORDS
-  set.transpose.each do|o1, o2, empties| # `[x1, x2, empty_xs], [y1, y2, empty_ys]`
+  set.transpose.each_with_index do|(o1, o2), i| # `[x1, x2, 0], [y1, y2, 1]`
     o2, o1 = o1, o2 if o1 > o2 # `Array#combination` does not specify order; `x`s aren’t ordered anyways
     taxicab_sum += o2 - o1
-    # Note: the `end` is exclusive because the `bsearch` is find-minimum (round up) for both edges
-    empty_count += Range.new(
-      *[o1, o2].map {|coord| empties.bsearch_index { _1 > coord } || empties.size },
-      true # exclude_end
-    ).size
+    empty_count += EMPTY_COORD_INDEXERS.fetch(i).size o1, o2
   end
 end
 

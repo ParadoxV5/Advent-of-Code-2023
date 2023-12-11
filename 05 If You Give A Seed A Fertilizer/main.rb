@@ -1,3 +1,5 @@
+require_relative '../helpers/bsearch_indexer'
+
 # Key Optimizations:
 # * [Memory] After each almanac section, Process the `list` with the mappings,
 #   then I’m done with the section and can discard it.
@@ -11,7 +13,7 @@
 #     especially for Part 2 where we have to segment humongous ranges rather than map for specific numbers.
 #   * This strategy asserts that the almanac source ranges do not overlap, lest there be ambiguity.
 
-PART2 = false
+PART2 = true
 File.open('input.txt') do|input|
   
   # Starts with the list of seeds and progressively {Array#map}s into the list of locations
@@ -31,20 +33,17 @@ File.open('input.txt') do|input|
     end
     section.clear # Done with it; GC
     map_keys = map.each_key.sort
+    map_indexer = BsearchIndexer[map_keys]
     
     if PART2
       # `src`: ___)___)___)___)___)
       # `num`:  [_______)     [___)_)
       # merge:  [_)___)_)      [__)_)
       #         A B   C D     X   Y Z
-      list = list.flat_map do|num_range|
-        num_begin, num_end = num_range
+      list = list.flat_map do|num_begin, num_end|
         [
           num_begin,
-          *map_keys[ Range.new(
-            *num_range.map {|src_anchor| map_keys.bsearch_index { _1 > src_anchor } || map_keys.size },
-            true # exclude_end
-          ) ],
+          *map_indexer[num_begin, num_end],
           num_end
         ].each_cons(2).map do|src_range|
           map.fetch(src_range.last) do|src_end|
