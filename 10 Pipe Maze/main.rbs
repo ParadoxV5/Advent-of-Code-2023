@@ -1,0 +1,16 @@
+type direction = :N | :S | :W | :E
+# `[y, x]`
+type coords = [Integer, Integer]
+
+PIPES: Hash[String, Hash[direction, direction]]
+
+FIELD: Array[String]
+S: coords
+
+MAX_ITERATIONS: Integer
+
+class Object
+  # @return whether `dir` is one of {direction} 
+  def step: (Integer y, Integer x, direction dir) -> coords
+          | (Integer y, Integer x, Symbol dir) -> coords?
+end
