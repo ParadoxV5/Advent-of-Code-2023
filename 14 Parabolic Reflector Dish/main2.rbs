@@ -1,0 +1,15 @@
+type coords_set = Array[[Integer, Integer]]
+$round_rocks: coords_set
+
+type space = Range[Integer]
+type spaces_by_coord = Array[Array[space]]
+SPACES_BY_COORD: [spaces_by_coord, spaces_by_coord]
+
+class Object
+  def tilt: (0 | 1 coord_id)
+            { (space range, Integer count) -> Enumerable[Integer] }
+            -> void # *de facto*L {$round_rocks}
+end
+
+STATES: Hash[coords_set, Integer]
+CYCLES: Integer
