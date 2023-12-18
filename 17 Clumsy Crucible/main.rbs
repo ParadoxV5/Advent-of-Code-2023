@@ -1,0 +1,9 @@
+type distance = Integer
+
+INPUT: Array[Array[distance]]
+TO_TRAVERSE: Hash[[Integer, Integer, 0|1], distance | Float]
+
+PART2: bool
+X_DEST: Integer
+Y_DEST: Integer
+NEIGHBORS_ENUMERATOR: _Each[Array[Integer]]
