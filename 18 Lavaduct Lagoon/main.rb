@@ -37,7 +37,6 @@ PERIMETER = File.foreach('input.txt').sum do|line|
 end
 # Note: the input cycles back to `[0, 0]` at the end.
 
-VERTEX_PAIRS = VERTICES.each_cons(2)
 # * Trapezoid formula
 # * Just the textbook formula isn’t enough since only exactly half of the trench is counted.
 #   * Each edge of the polygon has ½ of the block not counted.
@@ -45,4 +44,4 @@ VERTEX_PAIRS = VERTICES.each_cons(2)
 #   * Each 90° corner also has ¼ of a block not counted.
 #   * In order for the polyline to loop itself, it must have turned exactly 360°.
 #     This can only come from 4 more 90°s than there are 270° turns.
-puts (VERTEX_PAIRS.sum {|(x1, y1), (x2, y2)| (x1 - x2) * (y1 + y2) }.abs + PERIMETER) / 2 + 1
+puts (VERTICES.each_cons(2).sum {|(x1, y1), (x2, y2)| (x1 - x2) * (y1 + y2) }.abs + PERIMETER) / 2 + 1
