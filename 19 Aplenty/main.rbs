@@ -1,0 +1,41 @@
+# Part 1
+
+class Part < Data
+  def x: () -> Integer 
+  def m: () -> Integer 
+  def a: () -> Integer 
+  def s: () -> Integer
+  
+  def wf_A: () -> Integer
+  def wf_R: () -> Integer
+  def wf_in: () -> Integer
+end
+
+
+# Part 2
+
+type workflow = String
+type category = :x|:m|:a|:s
+
+WORKFLOWS: Hash[
+  workflow,
+  [
+    Array[[
+      category,
+      Integer, # criterion
+      boolish, # is_less
+      workflow
+    ]], # criteria
+    workflow # default
+  ]
+]
+
+class Object
+  def count: (
+    Hash[
+      category,
+      [Integer, Integer] # Faux Range
+    ] part_range,
+    workflow workflow
+  ) -> Integer
+end
