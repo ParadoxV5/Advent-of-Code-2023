@@ -7,19 +7,19 @@ PIPES = {
   'F' => {N: :E, W: :S}
 }
 
+# Keep line breaks and trailing empty string as paddings for out-of-bounds protection
 FIELD = File.readlines('input.txt') << ''
-  # Keep line breaks and trailing empty string as paddings for out-of-bounds protection
 FIELD.each_with_index do|line, y|
-  if x = line.index('S')
+  if (x = line.index 'S')
     line[x] = '$' # conflicts with `:S`
-    break S = [y, x]
+    break S = [x, y]
   end
 end
 
 # Infinite loop protection
 MAX_ITERATIONS = FIELD.size * FIELD.fetch(0).size
 
-def step(y, x, dir)
+def step(x, y, dir)
   case dir
   when :N
     y -= 1
@@ -32,12 +32,12 @@ def step(y, x, dir)
   else
     return nil
   end
-  [y, x]
+  [x, y]
 end
 
 # Part 1
 (upcase, downcase), steps = %i[N S W E].to_h do|dir|
-  y, x = S
+  x, y = S
   [
     [
       upcase = dir.to_s,
@@ -45,10 +45,10 @@ end
     ],
     
     (1...MAX_ITERATIONS).lazy.filter_map do|step|
-      y, x = step y, x, dir
+      x, y = step x, y, dir
       
-      tile = FIELD.fetch(y)[x]
-      if dir = PIPES.dig(tile, dir) # Check pipe char and validity
+      tile = FIELD.fetch(y)[x] # Note: `String does not have #dig method`
+      if (dir = PIPES.dig tile, dir) # Check pipe char and validity
         # Mark on the {FIELD} in preparation for Part 2
         FIELD.fetch(y)[x] = '-' == tile ? downcase : upcase
         nil # continue looping
