@@ -1,0 +1,30 @@
+class CommModule[out S < Object]
+  type mod = CommModule[Object]
+  type pulse = bool
+  
+  PULSE_QUEUE: Array[[mod, pulse]]
+  STATISTICS: [Integer, Integer]
+  
+  attr_reader state: S
+  def initialize: (?S state) -> S
+  attr_accessor destinations: Array[mod]
+  def link_from: (mod other) -> void
+  
+  def broadcast: (pulse) -> Integer
+  def queue: (pulse, mod from) -> void
+  
+  class FlipFlop < CommModule[pulse]
+    def initialize: ...
+    def queue: ...
+  end
+  class Conjunction < CommModule[Hash[mod, pulse]]
+    def initialize: ...
+    def link_from: ...
+    def queue: ...
+  end
+  
+  def self.update: () -> boolish
+  #MODULES: Array[mod]
+  BUTTON: CommModule[nil]
+  #STATES: Set[Array[top]]
+end
