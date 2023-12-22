@@ -1,0 +1,21 @@
+class Slab < Struct[Integer]
+  attr_accessor x1: Integer
+  attr_accessor y1: Integer
+  attr_accessor z1: Integer
+  attr_accessor x2: Integer
+  attr_accessor y2: Integer
+  attr_accessor z2: Integer
+  
+  attr_accessor sits_on: Array[Slab]
+  
+  %a{pure} attr_reader hard_carried_by: Slab?
+  @all_hard_carried_by: Set[Slab]?
+  attr_reader all_hard_carried_by: Set[Slab]
+  
+  def independent?: (Slab other) -> bool
+  def z=: [I < Integer] (I) -> I
+  def drop_on?: (Slab other) -> Integer?
+end
+
+STACK: Array[Slab]
+STACK_BY_Z2: Hash[Integer, Slab]

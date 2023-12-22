@@ -34,30 +34,26 @@ Slab = Struct.new(*%i[x1 y1 z1 x2 y2 z2]) do
   def independent?(other) =
     x1 > other.x2 || x2 < other.x1 || y1 > other.y2 || y2 < other.y1
   
-  # Note: Modifies `self` unless returning `nil`
+  def z=(z1)
+    self.z2 = z2 - self.z1 + z1
+    self.z1 = z1
+  end
   def drop_on?(other)
-    unless independent? other
-      z1 = other.z2.succ
-      self.z2 = z2 - self.z1 + z1
-      self.z1 = z1
-    end
+    self.z = other.z2.succ unless independent? other
   end
 end
 
 
-STACK = [Slab.new(0, 0, 0, 9, 9, 0)] # Initialize with a ground
+STACK = []
 File.foreach('input.txt')
   .map { Slab.new *_1.scan(/\d++/).map(&:to_i) }
   .sort_by!(&:z1) # I don’t think {Slab#z1} vs. {Slab#z2} matters here
   .each do|slab|
     # It’s more a Jenga than a pile, so linear is more efficient than {Array#bsearch}  
-    STACK.reverse_each.find { slab.drop_on? _1 }
+    slab.z = 0 if STACK.reverse_each.none? { slab.drop_on? _1 }
     # Ensure the {STACK} is sorted by {Slab#z2} (if only there is “sorted list”…)
     STACK.insert STACK.rindex { _1.z2 <= slab.z2 }&.succ || 0, slab
   end
-# Now that everything has settled, don’t need the ground anymore.
-# (It actually impacts Part 2 – imagine the chain reaction if the Island is disïntegrated 💀.)
-STACK.shift
 
 STACK_BY_Z2 = STACK.group_by(&:z2)
 # Fill in {#sits_on}
