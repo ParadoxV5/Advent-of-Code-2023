@@ -5,7 +5,6 @@
 # Set to `{}` to enable {Enumerable#tally} analysis
 ANALYSIS = nil
 
-
 #@type method reflection_index: (Array[top] array) -> Integer?
 def reflection_index(array)
   ANALYSIS&.then { array.tally.each_value.tally _1 }
@@ -23,10 +22,10 @@ end
 puts(
   File.foreach('input.txt', '', chomp: true).sum do|pattern|
     array = pattern.lines(chomp: true)
-    if vertical_reflection_index = reflection_index(array)
+    if (vertical_reflection_index = reflection_index array)
       vertical_reflection_index * 100
     else
-      reflection_index(array.map(&:bytes).transpose) || 0 
+      reflection_index array.map(&:bytes).transpose or 0
     end
   end
 )

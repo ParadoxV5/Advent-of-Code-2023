@@ -54,7 +54,7 @@ until beams.empty?
         dir_vector = -dir_vector
       in '\\'
         dir_is_y = !dir_is_y
-      else # Already-traversed splitter, `\n` from off-grid, or corrupt input
+      else # Already-traversed splitter, `\n`/`nil` from off-grid, or corrupt input
         break
       end
       if split

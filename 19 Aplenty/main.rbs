@@ -1,9 +1,9 @@
 # Part 1
 
 class Part < Data
-  def x: () -> Integer 
-  def m: () -> Integer 
-  def a: () -> Integer 
+  def x: () -> Integer
+  def m: () -> Integer
+  def a: () -> Integer
   def s: () -> Integer
   
   def wf_A: () -> Integer
