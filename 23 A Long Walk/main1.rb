@@ -15,17 +15,20 @@ DIRECTIONS = {
 
 VISITED = Set.new
 $max = 0
-def dfs(x, y, direction)
+def dfs(x, y)
   here = MAZE.fetch(y)[x]
-  return unless :'.'.equal? here or direction.equal? here
+  return if :'#'.equal? here
   if Y_MAX.equal? y
     $max = VISITED.size if VISITED.size > $max
-  else
-    return unless VISITED.add?(xy = [x, y])
-    DIRECTIONS.each {|direction2, (dx, dy)| dfs x+dx, y+dy, direction2 }
+  elsif VISITED.add?(xy = [x, y])
+    if (dx, dy = DIRECTIONS[here])
+      dfs x+dx, y+dy
+    else # any direction
+      DIRECTIONS.each_value {|dx, dy| dfs x+dx, y+dy }
+    end
     VISITED.delete xy
   end
 end
 
-dfs 1, 0, 'v'
+dfs 1, 0
 puts $max
