@@ -23,7 +23,7 @@ SPACES_BY_COORD = [spaces_by_x, spaces_by_y].map do|spaces_by_coord|
     spaces_at_coord.chunk_while { _1.succ == _2 }.map { _1.first.._1.last }
   end
 end # `[SPACES_BY_X, SPACES_BY_Y]`
-input = spaces_by_x = spaces_by_y = nil # GC
+input = spaces_by_x = spaces_by_y = [] # GC
 
 # def tilt_east
 #   $round_rocks = $round_rocks.group_by { _2 }.flat_map do|y, array|

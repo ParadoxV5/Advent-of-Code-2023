@@ -18,7 +18,7 @@ input.each_with_index do|line, y|
 end
 
 EMPTY_COORD_INDEXERS = empty_coords.map { BsearchIndexer.new _1.compact }
-input = empty_coords = nil # GC
+input = empty_coords = [] # GC
 
 # Strategy: Count the taxicab distance normally, account for the expansion separately.
 taxicab_sum = empty_count = 0

@@ -72,7 +72,7 @@ class CommModule
   end
   
   BUTTON = new.tap { _1.destinations = modules.values_at('broadcaster') }
-  modules = nil # GC
+  modules.clear # GC
   
   # Totally thought Part 2 will make us press the button a bajillion times…
   # I solved Part 1 without checking state loops. This’ll be an exercise to the reader, then!
