@@ -1,0 +1,8 @@
+ANALYSIS: Hash[Integer, Integer]?
+type matrix[E] = Array[Array[E]]
+
+class Object
+  def mirror_diff: [E] (matrix[E], Integer idx_left, Integer idx_right) { (E, E) -> void } -> true
+  
+  def reflection_index: (matrix[top]) -> Integer?
+end

@@ -5,29 +5,32 @@
 # Set to `{}` to enable {Enumerable#tally} analysis
 ANALYSIS = nil
 
-#@type method reflection_index: (Array[top] array) -> Integer?
-def reflection_index(array)
+def mirror_diff(matrix, idx_left, idx_right, &blk)
+  until idx_left.negative? or matrix.size == idx_right
+    matrix.fetch(idx_left).zip(matrix.fetch(idx_right)) { blk[_1, _2] unless _1 == _2 }
+    idx_left  -= 1
+    idx_right += 1
+  end
+  true
+end
+
+def reflection_index(matrix)
   ANALYSIS&.then { array.tally.each_value.tally _1 }
-  
-  (1..array.size / 2)
-    .then { _1.chain _1.reverse_each }
-    .with_index(1)
-    .find do|mirror_size, index|
-      before = array[index - mirror_size...index]
-      after  = array[index...mirror_size + index]
-      before == after.reverse
-    end&.last
+  matrix.each_index.each_cons(2) do|idx_before, idx_after|
+    return idx_after if mirror_diff(matrix, idx_before, idx_after) { break }
+  end
+  nil
 end
 
 puts(
   File.foreach('input.txt', '', chomp: true).sum do|pattern|
-    array = pattern.lines(chomp: true)
-    if (vertical_reflection_index = reflection_index array)
-      vertical_reflection_index * 100
+    matrix = pattern.each_line(chomp: true).map(&:bytes)
+    if (v_reflect_idx = reflection_index matrix)
+      v_reflect_idx * 100
     else
-      reflection_index array.map(&:bytes).transpose or 0
+      reflection_index matrix.transpose or 0
     end
   end
 )
 
-ANALYSIS&.then { pp _1 }
+ANALYSIS&.then { warn _1 }
