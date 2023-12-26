@@ -1,13 +1,12 @@
-# Hah, another “find the area of a polygon” (Day 10 Part 2, remember?)
+# Hah, another “find the area of a polygon” ([Day 10](../10 Pipe Maze/main.rb) Part 2, remember?)
 # Unfortunately, the lagoon is too huge for the Even-Odd Rule Algorithm (which, to be fair, is brute-force),
 # so we need an alternate algorithm.
 # 
 # Assuming no 0° and 360° turns, the input file naturally marks out the vertices of the lagoon polygon.
 # A quick Google search of `area of polygon from vertices` gets us [Gauss's area formula](https://en.wikipedia.org/wiki/Shoelace_formula).
-# Day 10 Part 2 is also solvable with the new formula, but for that one, I’m sticking with my independent idea ’til the bitter end.
 # 
 # The formula doesn’t work if the trench crosses over itself and the diggers clear out both holes,
-# but neither does the Even-Odd Rule Algorithm. While not specified, my input doesn’t look like having such *edge* case,
+# While not specified, my input doesn’t look like having such *edge* case,
 # and I assume the elves won’t bother digging that strangely either.
 # In contrast, Day 10’s pipes have no pieces (other than `S`, maybe) that support intersections.
 

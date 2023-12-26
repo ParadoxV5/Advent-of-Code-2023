@@ -11,7 +11,6 @@ PIPES = {
 FIELD = File.readlines('input.txt') << ''
 FIELD.each_with_index do|line, y|
   if (x = line.index 'S')
-    line[x] = '$' # conflicts with `:S`
     break S = [x, y]
   end
 end
@@ -35,35 +34,22 @@ def step(x, y, dir)
   [x, y]
 end
 
-# Part 1
-(upcase, downcase), steps = %i[N S W E].to_h do|dir|
+def follow(dir)
   x, y = S
-  [
-    [
-      upcase = dir.to_s,
-      downcase = upcase.downcase
-    ],
-    
-    (1...MAX_ITERATIONS).lazy.filter_map do|step|
-      x, y = step x, y, dir
-      
-      tile = FIELD.fetch(y)[x] # Note: `String does not have #dig method`
-      if (dir = PIPES.dig tile, dir) # Check pipe char and validity
-        # Mark on the {FIELD} in preparation for Part 2
-        FIELD.fetch(y)[x] = '-' == tile ? downcase : upcase
-        nil # continue looping
-      elsif '$' == tile # looped back to the start
-        step # length of the whole loop
-      else
-        0 # Disqualify open path, already-traversed path or broken input
-      end
-    end.first || -1
-  ]
-end.max_by { _2 }
-
-#warn FIELD
+  
+  (1...MAX_ITERATIONS).each do|steps|
+    x, y = step x, y, dir
+    tile = FIELD.fetch(y)[x] # Note: `String does not have #dig method`
+    return steps if 'S' == tile # looped back to the start
+    return unless (dir = PIPES.dig tile, dir)
+      # Check pipe char and validity; disqualify open path, already-traversed path or broken input
+    FIELD.fetch(y)[x] = 'O' # erase the path so we don’t traverse the same loop twice
+  end
+  
+  nil
+end
 
 puts(
   'Part 1',
-  steps / 2 # `floordiv` 2 for half-loop
+  %i[N S W E].filter_map { follow _1 }.max&./(2) # `floordiv` 2 for half-loop
 )
