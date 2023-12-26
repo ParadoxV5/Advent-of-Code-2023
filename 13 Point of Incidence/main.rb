@@ -16,8 +16,13 @@ end
 
 def reflection_index(matrix)
   ANALYSIS&.then { array.tally.each_value.tally _1 }
-  matrix.each_index.each_cons(2) do|idx_before, idx_after|
-    return idx_after if mirror_diff(matrix, idx_before, idx_after) { break }
+  matrix.each_index.each_cons(2).with_object(
+    1 # Part 1: 0; Part 2: 1
+  ) do|(idx_before, idx_after), differences_left|
+    return idx_after if mirror_diff matrix, idx_before, idx_after do
+      break if differences_left.zero?
+      differences_left -= 1
+    end and differences_left.zero?
   end
   nil
 end
