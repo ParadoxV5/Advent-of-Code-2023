@@ -1,3 +1,7 @@
+# I was originally stuck on Part 2 until I decided to do some research for
+# [Day 18](18 Lavaduct Lagoon/main.rb) which has the exact same type of problem.
+require_relative '../helpers/area_from_vertices'
+
 PIPES = {
   '|' => {N: :N, S: :S},
   '-' => {W: :W, E: :E},
@@ -34,22 +38,32 @@ def step(x, y, dir)
   [x, y]
 end
 
-def follow(dir)
+def follow(starting_direction)
+  corners = []
   x, y = S
+  dir = starting_direction
   
-  (1...MAX_ITERATIONS).each do|steps|
+  (1...MAX_ITERATIONS).each do|length|
     x, y = step x, y, dir
     tile = FIELD.fetch(y)[x] # Note: `String does not have #dig method`
-    return steps if 'S' == tile # looped back to the start
+    if 'S' == tile # looped back to the start
+      corners << S unless starting_direction.equal? dir
+      return [corners, length]
+    end
     return unless (dir = PIPES.dig tile, dir)
       # Check pipe char and validity; disqualify open path, already-traversed path or broken input
+    corners << [x, y]  unless '|-'.include? tile
     FIELD.fetch(y)[x] = 'O' # erase the path so we don’t traverse the same loop twice
   end
   
   nil
 end
 
-puts(
-  'Part 1',
-  %i[N S W E].filter_map { follow _1 }.max&./(2) # `floordiv` 2 for half-loop
-)
+if (corners, perimeter = %i[N S W E].filter_map { follow _1 }.max_by { _2 })
+  puts(
+    'Part 1', # Semi-perimeter
+    perimeter / 2, # `floordiv` 2 for half-loop
+    'Part 2', # Area
+    area_from_vertices(corners, -perimeter)
+  )
+end

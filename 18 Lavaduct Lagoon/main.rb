@@ -3,12 +3,12 @@
 # so we need an alternate algorithm.
 # 
 # Assuming no 0° and 360° turns, the input file naturally marks out the vertices of the lagoon polygon.
-# A quick Google search of `area of polygon from vertices` gets us [Gauss's area formula](https://en.wikipedia.org/wiki/Shoelace_formula).
-# 
 # The formula doesn’t work if the trench crosses over itself and the diggers clear out both holes,
 # While not specified, my input doesn’t look like having such *edge* case,
 # and I assume the elves won’t bother digging that strangely either.
 # In contrast, Day 10’s pipes have no pieces (other than `S`, maybe) that support intersections.
+
+require_relative '../helpers/area_from_vertices'
 
 x = y = 0
 VERTICES = [[x, y]]
@@ -36,11 +36,4 @@ PERIMETER = File.foreach('input.txt').sum do|line|
 end
 # Note: the input cycles back to `[0, 0]` at the end.
 
-# * Trapezoid formula
-# * Just the textbook formula isn’t enough since only exactly half of the trench is counted.
-#   * Each edge of the polygon has ½ of the block not counted.
-#   * Simply counting edges up also overcounts by ¼ for every 270° corner.
-#   * Each 90° corner also has ¼ of a block not counted.
-#   * In order for the polyline to loop itself, it must have turned exactly 360°.
-#     This can only come from 4 more 90°s than there are 270° turns.
-puts (VERTICES.each_cons(2).sum {|(x1, y1), (x2, y2)| (x1 - x2) * (y1 + y2) }.abs + PERIMETER) / 2 + 1
+puts area_from_vertices VERTICES, PERIMETER

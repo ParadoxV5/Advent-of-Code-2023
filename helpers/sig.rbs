@@ -10,3 +10,10 @@ class BsearchIndexer[E] < Proc
   
   def size: (E begin, E end) -> Integer
 end
+
+class Object
+  def area_from_vertices: (
+    Enumerable[[Integer, Integer]] vertices,
+    Integer additional_perimeter
+  ) -> Integer
+end
